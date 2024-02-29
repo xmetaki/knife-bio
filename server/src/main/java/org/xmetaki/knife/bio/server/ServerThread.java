@@ -22,6 +22,7 @@ public class ServerThread implements Runnable{
     @Override
     public void run() {
         while(true) {
+            logger.info("accept事件循环cycle");
             Socket accept = null;
             // 转换受检异常为runtime异常
             try {

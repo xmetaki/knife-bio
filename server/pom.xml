@@ -40,4 +40,18 @@
             <artifactId>snakeyaml</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>knife-bio</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.xmetaki.knife.bio.server.Server</mainClass>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

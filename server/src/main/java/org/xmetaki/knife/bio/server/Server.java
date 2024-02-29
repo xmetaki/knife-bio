@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.Map;
 
@@ -30,7 +27,7 @@ public class Server {
         // 解析参数
         argumentParser(args);
         BaseInfo baseInfo = configFileParse(config_path);
-        new Thread(new ServerThread(baseInfo)).start();
+        new Thread(new ServerThread(baseInfo), "服务端线程").start();
         System.out.println("启动成功啦!");
     }
     public static void argumentParser(String[] args) {
@@ -49,9 +46,7 @@ public class Server {
 
     public static BaseInfo configFileParse(String path) {
         BaseInfo baseInfo = new BaseInfo();
-        URL url = Server.class.getResource(path);
-        File file = new File(url.getFile());
-        try (FileInputStream in = new FileInputStream(file);) {
+        try (InputStream in = Server.class.getResourceAsStream(path);) {
             Yaml yaml = new Yaml();
             Map map = yaml.loadAs(in, Map.class);
             Map common = (Map)map.get("common");
