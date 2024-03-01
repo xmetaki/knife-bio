@@ -1,14 +1,20 @@
 package org.xmetaki.knife.bio.utils;
 
+import com.sun.corba.se.spi.activation.Server;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
- * 非对称加密工具类
+ * 对称加密工具类
  */
 public class AESUtil {
-    private String aesKey;
+    private final String aesKey;
     // 算法
     private static final String algorithm = "AES/ECB/PKCS5Padding";
     // 加密cipher
@@ -16,12 +22,27 @@ public class AESUtil {
     // 解密cipher
     private Cipher decryptedCipher;
 
+    public static final String DEFAULT_AES_KEY = "1234567890123456";
+
     public AESUtil() {
-        this("1234567890123456");
+        this(DEFAULT_AES_KEY);
     }
     public AESUtil(String aesKey) {
-        this.aesKey = aesKey;
+        this.aesKey = DEFAULT_AES_KEY;
         this.init();
+    }
+
+    public String getDynamicAesKey() {
+        String result = DEFAULT_AES_KEY;
+        try {
+            final KeyGenerator generator = KeyGenerator.getInstance("AES");
+            generator.init(16 * 8);
+            final SecretKey secretKey = generator.generateKey();
+            result = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     // 初始化编码器和解码器
@@ -69,6 +90,4 @@ public class AESUtil {
         }
         return bytes;
     }
-
-
 }

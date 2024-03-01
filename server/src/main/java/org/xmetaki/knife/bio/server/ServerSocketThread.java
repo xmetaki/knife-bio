@@ -47,6 +47,7 @@ public class ServerSocketThread implements Runnable{
             return -1;
         }
         isLogin = true; // 直至此处判别为登录成功
+        logger.info("{} 登录成功", socket.getRemoteSocketAddress());
         return 0;
     }
 
@@ -67,7 +68,7 @@ public class ServerSocketThread implements Runnable{
                        logger.info("客户端开始登录");
                        int listenCount = loginHandler(inputStream);
                        if (!isLogin) {
-                           logger.warn("客户端{}登录失败, 将关闭此次连接", socketAddr);
+                           logger.warn("客户端{} 本次登录失败, 将关闭此次连接", socketAddr);
                            break;
                        }
                        if (listenCount <= 0) {
